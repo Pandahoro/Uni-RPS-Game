@@ -3,8 +3,11 @@ from _thread import *
 import pickle
 from Bgame import Game
 import hashlib
+import json
+import os
 
 from Bnetwork import HEADERSIZE
+
 
 
 server = "192.168.1.15" # set ip as current on network, check each time router crashes
@@ -12,6 +15,8 @@ port = 5555 #gib port
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 hashTable = {}
+with open('users.json', 'r') as openfile:
+    hashTable = json.load(openfile)
 
 try:
     s.bind((server, port))
@@ -86,6 +91,10 @@ def threaded_client(conn, p, gameId):
                 lable, num = k,v
                 print("{:<8} {:<20}".format(lable, num))
             print("-------------------------------------------")
+            #with open("users.json", "w") as output:
+                #json.dump(hashTable, output)
+            json.dump(hashTable, open("users.json","w"))
+
 
         else:
             if(hashTable[name] == password): #if contained in table, connect them and exit login system
