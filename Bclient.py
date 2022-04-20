@@ -122,13 +122,13 @@ def main():
                         for btn in LoginUsr:
                             if btn.click(pos):
                                 UserName += btn.text #add the button pressed to the string
-                                
+                                print(UserName)
                                 i = i + 1
                 pygame.display.update()
             
             if i == 4: #once password limit reached, send to server (Yes 4 is a small number, proof of concept only)
                 n.send_data(UserName)
-                print(UserName)
+                
                 SendUser = False
 
         while SendPass: # same function as sending username just for a password instead
