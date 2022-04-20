@@ -15,7 +15,7 @@ port = 5555 #gib port
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 hashTable = {}
-with open('users.json', 'r') as openfile:
+with open('users.json', 'r') as openfile: #open the user/pass json file and load it into the dict
     hashTable = json.load(openfile)
 
 try:
@@ -93,7 +93,7 @@ def threaded_client(conn, p, gameId):
             print("-------------------------------------------")
             #with open("users.json", "w") as output:
                 #json.dump(hashTable, output)
-            json.dump(hashTable, open("users.json","w"))
+            json.dump(hashTable, open("users.json","w")) # save new user /pass into file
 
 
         else:
