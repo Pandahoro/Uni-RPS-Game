@@ -8,9 +8,10 @@ import os
 
 from Bnetwork import HEADERSIZE
 
+hostName = socket.gethostname()
+localIp = socket.gethostbyname(hostName) #added this due to my network location liking to crash and change IP every hour
 
-
-server = "192.168.1.15" # set ip as current on network, check each time router crashes
+server = localIp # set ip as current on network, check each time router crashes
 port = 5555 #gib port
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

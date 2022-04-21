@@ -136,7 +136,8 @@ def main():
             print('Enter Password:')
             for btn in LoginPass:
                 btn.draw(win)
-            PassName=('')  
+            PassName=('')
+            FakePass=('')  
             i = 0  
             while (i<4):
 
@@ -146,7 +147,9 @@ def main():
                         for btn in LoginPass:
                             if btn.click(pos):
                                 PassName += btn.text
-                                print(PassName)
+                                FakePass += '*'
+                                print(FakePass)
+                            
                                 i = i + 1
                 pygame.display.update()
             
