@@ -2,13 +2,13 @@ from importlib.resources import Package
 import socket
 import pickle
 HEADERSIZE = 10
-hostName = socket.gethostname()
+hostName = socket.gethostname() #auto hosname gathering cause router bad and likes to crash
 localIp = socket.gethostbyname(hostName)
 
 class Network: #creating network class
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server = localIp
+        self.server = localIp #set server as hostname ip from local computer
         self.port = 5555
         self.addr = (self.server, self.port)
         self.p = self.connect()
@@ -33,10 +33,10 @@ class Network: #creating network class
         #except socket.error as e:
             #print(e)
 
-    def send_data(self, data):
+    def send_data(self, data): #work around for the EOFerror, 
         
         data_to_send = pickle.dumps(data)
-        data_size = bytes(f'{len(data_to_send):<{10}}', "utf-8")
+        data_size = bytes(f'{len(data_to_send):<{10}}', "utf-8") #create a bytes out of then of the pickle dump data as a f string with utf 8 coding
         try:
             self.client.send(data_size + data_to_send)
             package = self.receive_data()

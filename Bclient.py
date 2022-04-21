@@ -126,7 +126,7 @@ def main():
                                 i = i + 1
                 pygame.display.update()
             
-            if i == 4: #once password limit reached, send to server (Yes 4 is a small number, proof of concept only)
+            if i == 4: #once username limit reached, send to server (Yes 4 is a small number, proof of concept only)
                 n.send_data(UserName)
                 
                 SendUser = False
@@ -147,7 +147,7 @@ def main():
                         for btn in LoginPass:
                             if btn.click(pos):
                                 PassName += btn.text
-                                FakePass += '*'
+                                FakePass += '*' #to show **** instead of 1234
                                 print(FakePass)
                             
                                 i = i + 1
