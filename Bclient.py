@@ -1,3 +1,4 @@
+from tabnanny import check
 import pygame
 from Bnetwork import Network
 import pickle
@@ -85,12 +86,104 @@ def redrawWindow(win, game, p):
 btns = [Button("Rock", 25, 250, (0, 0, 0)), Button(
     "scissors", 125, 250, (255, 0, 0)), Button("Paper", 255, 250, (0,255,0))]
 
+LoginUsr = [Button("A", 25, 250, (0, 0, 0)), Button(
+    "B", 125, 250, (255, 0, 0)), Button("C", 255, 250, (0,255,0)), Button("D", 355, 250, (0,255,255))]
+
+LoginPass = [Button("1", 25, 250, (0, 0, 0)), Button(
+    "2", 125, 250, (255, 0, 0)), Button("3", 255, 250, (0,255,0)), Button("4", 355, 250, (0,255,255))]
+
 def main():
-    run = True
+    run = False
     clock = pygame.time.Clock()
     n = Network()
-    player = int(n.getP())
-    print("You are player", player)
+    
+    login = True 
+    while login: # loop to check login
+        clock.tick(60)
+        pygame.display.update()
+        win.fill((225, 225, 225)) #change window to color
+        pygame.display.update()
+        # example send n.send_data(btn.text)
+        font = pygame.font.SysFont("AvantGarde", 40)
+        SendUser = True
+        SendPass = True
+        while SendUser: # loop to send username to server
+            Message = n.receive_data()
+            print(Message)
+            for btn in LoginUsr: #draw login numpad
+                btn.draw(win)
+            UserName=('')  
+            i = 0  
+            while (i<4): #while loop to get player input with buttons using pos
+
+                for event in pygame.event.get():
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        pos = pygame.mouse.get_pos()
+                        for btn in LoginUsr:
+                            if btn.click(pos):
+                                UserName += btn.text #add the button pressed to the string
+                                print(UserName)
+                                i = i + 1
+                pygame.display.update()
+            
+            if i == 4: #once username limit reached, send to server (Yes 4 is a small number, proof of concept only)
+                n.send_data(UserName)
+                
+                SendUser = False
+
+        while SendPass: # same function as sending username just for a password instead
+            
+            print('Enter Password:')
+            for btn in LoginPass:
+                btn.draw(win)
+            PassName=('')
+            FakePass=('')  
+            i = 0  
+            while (i<4):
+
+                for event in pygame.event.get():
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        pos = pygame.mouse.get_pos()
+                        for btn in LoginPass:
+                            if btn.click(pos):
+                                PassName += btn.text
+                                FakePass += '*' #to show **** instead of 1234
+                                print(FakePass)
+                            
+                                i = i + 1
+                pygame.display.update()
+            
+            
+           
+            
+            if i == 4: 
+                n.send_data(PassName)
+                SendPass = False
+
+
+        Check = n.Check_msg() # checking messages from the server
+        print(Check)
+        UsrReg = ('Registration Successful')
+        UsrDeni = ('Login failed')
+        UsrConn = ('Connection successful')
+        if Check == UsrReg: # if new user, ask user to login
+            SendPass = True
+            SendUser = True
+            print('Please login with new account: ')
+
+        if Check == UsrDeni: #if password wrong ask again
+            SendPass = True
+            SendUser = True
+            print('Incorrect password, please try again: ')
+        
+        if Check == UsrConn: #if correct user /pass then proceed to game
+            login = False
+            player = int(n.getP())
+            print("You are player", player)
+            run = True
+            
+
+    
 
     while run:
         clock.tick(60)
