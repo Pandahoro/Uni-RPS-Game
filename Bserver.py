@@ -32,13 +32,13 @@ games = {}
 idCount = 0
 HEADERSIZE = 10
 
-def receive_data(sock):
+def receive_data(sock): 
     full_msg = b''
     new_msg = True
     while True:
         msg = sock.recv(16)
         if new_msg:
-            msglen = int(msg[:HEADERSIZE])
+            msglen = int(msg[:HEADERSIZE]) #keep reading until full message received
             new_msg = False
         
         full_msg += msg
@@ -51,7 +51,7 @@ def receive_data(sock):
 
 def send_data(clientsocket, data):
     data_to_send = pickle.dumps(data)
-    data_size = bytes(f'{len(data_to_send):<{10}}', "utf-8")
+    data_size = bytes(f'{len(data_to_send):<{10}}', "utf-8") #create a bytes out of then of the pickle dump data as a f string with utf 8 coding
     try:
         clientsocket.send(data_size + data_to_send)
 
@@ -92,8 +92,6 @@ def threaded_client(conn, p, gameId):
                 lable, num = k,v
                 print("{:<8} {:<20}".format(lable, num))
             print("-------------------------------------------")
-            #with open("users.json", "w") as output:
-                #json.dump(hashTable, output)
             json.dump(hashTable, open("users.json","w")) # save new user /pass into file
 
 
